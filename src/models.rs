@@ -7,3 +7,11 @@ pub struct Word {
     pub example: String,
     pub published: bool,
 }
+
+#[derive(Queryable)]
+pub struct WordMeet {
+    pub id: i32,
+    pub word: String,
+    pub timestamp: u128,
+    pub source: String,
+}

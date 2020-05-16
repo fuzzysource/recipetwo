@@ -9,9 +9,9 @@ pub struct Word {
 }
 
 #[derive(Queryable)]
-pub struct WordMeet {
+pub struct Encounter {
     pub id: i32,
     pub word: String,
-    pub timestamp: u128,
+    pub timestamp: i64,
     pub source: String,
 }

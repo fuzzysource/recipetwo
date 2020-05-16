@@ -17,24 +17,23 @@ pub fn establish_connection() -> SqliteConnection {
         .expect(&format!("Error connecting to {}", database_url))
 }
 
-pub struct MeetStore<'a> {
+pub struct Store<'a> {
     db: &'a SqliteConnection,
 }
 
-impl MeetStore<'_> {
-    pub fn new(db: &SqliteConnection) -> MeetStore {
-        MeetStore { db }
+impl Store<'_> {
+    pub fn new(db: &SqliteConnection) -> Store {
+        Store { db }
     }
-    pub fn meet(&self, w: String, src: String) {
-        use schema::word_meets::dsl::*;
+    pub fn encounter(&self, w: String, src: String) {
+        use schema::encounters::dsl::*;
         let now = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .unwrap()
             .as_millis() as i64;
-        let inserted = diesel::insert_into(word_meets)
+        let inserted = diesel::insert_into(encounters)
             .values((source.eq(src), timestamp.eq(now), word.eq(w)))
             .execute(self.db);
-        assert_eq!(Ok(1), inserted);
-        println!("Hello")
+        assert_eq!(Ok(1), inserted)
     }
 }

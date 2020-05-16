@@ -1,5 +1,5 @@
 table! {
-    word_meets (id) {
+    encounters (id) {
         id -> Integer,
         word -> Text,
         timestamp -> BigInt,
@@ -19,6 +19,6 @@ table! {
 }
 
 allow_tables_to_appear_in_same_query!(
-    word_meets,
+    encounters,
     words,
 );

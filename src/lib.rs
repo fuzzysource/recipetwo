@@ -25,15 +25,27 @@ impl Store<'_> {
     pub fn new(db: &SqliteConnection) -> Store {
         Store { db }
     }
-    pub fn encounter(&self, w: String, src: String) {
+    pub fn encounter(&self, w: String, src: String) -> Result<usize, diesel::result::Error> {
         use schema::encounters::dsl::*;
         let now = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .unwrap()
             .as_millis() as i64;
-        let inserted = diesel::insert_into(encounters)
+        diesel::insert_into(encounters)
             .values((source.eq(src), timestamp.eq(now), word.eq(w)))
-            .execute(self.db);
-        assert_eq!(Ok(1), inserted)
+            .execute(self.db)
+    }
+
+    pub fn new_word(&self, w: models::Word) -> Result<usize, diesel::result::Error> {
+        use schema::words::dsl::*;
+        diesel::insert_into(words)
+            .values((
+                word.eq(w.word),
+                meaning.eq(w.meaning),
+                url.eq(w.url),
+                example.eq(w.example),
+                published.eq(w.published),
+            ))
+            .execute(self.db)
     }
 }

@@ -10,7 +10,9 @@ fn main() {
 
     let connection = establish_connection();
     let store = Store::new(&connection);
-    store.encounter("Hello".to_string(), "https://google.com.vn".to_string());
+    store
+        .encounter("Hello".to_string(), "https://google.com.vn".to_string())
+        .unwrap();
     let results = encounters
         .filter(word.eq("Hello"))
         .limit(100)
@@ -21,4 +23,12 @@ fn main() {
     for w in results {
         println!("{} {}", w.id, w.word);
     }
+    println!(
+        "Count \"Hello\": {}",
+        store.count_encounter("Hello".to_string())
+    );
+    println!(
+        "Nearest \"Hello\": {}",
+        store.nearest_period("Hello".to_string())
+    );
 }

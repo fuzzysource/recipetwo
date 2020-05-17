@@ -48,4 +48,34 @@ impl Store<'_> {
             ))
             .execute(self.db)
     }
+
+    pub fn count_encounter(&self, w: String) -> i64 {
+        use diesel::dsl::count;
+        use schema::encounters::dsl::*;
+        encounters
+            .filter(word.eq(w))
+            .select(count(word))
+            .first(self.db)
+            .unwrap()
+    }
+
+    pub fn nearest_period(&self, w: String) -> i64 {
+        use schema::encounters::dsl::*;
+        let res = encounters
+            .filter(word.eq(w))
+            .select(timestamp)
+            .order(timestamp.desc())
+            .offset(0)
+            .limit(2)
+            .load::<i64>(self.db);
+        if let Ok(latest) = res {
+            if latest.len() == 2 {
+                return latest[0] - latest[1];
+            }
+        }
+        -320000000
+    }
+    // pub fn calculate_score(&self, w: String) -> i64 {
+
+    // }
 }
